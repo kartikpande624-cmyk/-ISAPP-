@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ISAPP — Student &amp; Faculty Portal</title>
+<link rel="stylesheet" href="style11.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+<section class="auth-wrap" id="authScreen">
+  <div class="auth-hero">
+    <div class="brand" style="border:0;padding:0;margin:0">
+      <div class="bicon">🎓</div>
+      <div>
+        <div class="bname">ISAPP</div>
+        <div class="bsub" style="color:var(--muted)">Integrated Student Academic &amp; Profile Portal</div>
+      </div>
+    </div>
+    <h1>Your college stuff,<br>finally in one place.</h1>
+    <p>Track attendance with bunk calculator, Central Quiz &amp; exam marks, study-rest timetable, skills, notices, and classmates.</p>
+    <div class="chips">
+      <span class="chip">Attendance &amp; Bunk Calc</span>
+      <span class="chip">Central Quiz &amp; Exams</span>
+      <span class="chip">Study &amp; Rest Timetable</span>
+      <span class="chip">Teacher Notices &amp; Notes</span>
+    </div>
+  </div>
+
+  <div class="auth-card">
+    <h2>Welcome to ISAPP</h2>
+    <p id="authSub">Sign in with your college email (@mitsgwl.ac.in) or Gmail.</p>
+    <button type="button" class="gbtn" onclick="signInWithGoogle()">Continue with Google (Gmail)</button>
+    <div class="div">or use Email</div>
+
+    <div class="trow">
+      <button type="button" class="tbtn active" id="tLog" onclick="setTab('login')">Log In</button>
+      <button type="button" class="tbtn" id="tSig" onclick="setTab('signup')">Create Account</button>
+      <button type="button" class="tbtn" id="tOtp" onclick="setTab('otp')">6-Digit Code</button>
+    </div>
+
+    <form onsubmit="authSub(event)">
+      <div id="suBox" class="hidden">
+        <div class="fld">
+          <label>Full Name</label>
+          <input id="suName" placeholder="e.g. Aarav Sharma">
+        </div>
+        <div class="fg" style="margin-bottom:10px">
+          <div class="fld">
+            <label>Branch</label>
+            <select id="suBranch">
+              <option value="CS">CS (Computer Science)</option>
+              <option value="CD">CD (CS &amp; Design)</option>
+              <option value="TC">TC / CST</option>
+              <option value="AIDS">AIDS (AI &amp; Data Science)</option>
+              <option value="AI">AI (Artificial Intelligence)</option>
+              <option value="AIML">AIML (AI &amp; Machine Learning)</option>
+              <option value="AIR">AIR (AI &amp; Robotics)</option>
+              <option value="EE">EE (Electrical Engg.)</option>
+              <option value="CE">CE (Civil Engg.)</option>
+              <option value="CM">CM (Chemical Engg.)</option>
+              <option value="ME">ME (Mechanical Engg.)</option>
+              <option value="AR">AR (B.Arch)</option>
+            </select>
+          </div>
+          <div class="fld">
+            <label>Year</label>
+            <select id="suYear">
+              <option>1st Year</option>
+              <option>2nd Year</option>
+              <option>3rd Year</option>
+              <option>4th Year</option>
+            </select>
+          </div>
+        </div>
+        <div class="fld">
+          <label>Enrollment Number (Optional)</label>
+          <input id="suEnroll" placeholder="e.g. BTCS26O1001">
+        </div>
+      </div>
+
+      <div class="fld">
+        <label>College Email / Gmail</label>
+        <input id="auMail" type="email" required placeholder="e.g. 26tc1ka63@mitsgwl.ac.in or name@gmail.com">
+      </div>
+
+      <div class="fld" id="passBox">
+        <label>Password (6+ chars)</label>
+        <input id="auPass" type="password" required minlength="6" placeholder="At least 6 characters">
+      </div>
+
+      <div class="fld hidden" id="otpCodeBox">
+        <label>6-Digit Verification Code</label>
+        <input id="auOtp" inputmode="numeric" maxlength="6" placeholder="Enter 6-digit code from email">
+        <span class="hint">Click "Send 6-Digit Code" first, then check your Gmail / college inbox.</span>
+      </div>
+
+      <button type="submit" class="btn pri" style="width:100%;padding:10px;justify-content:center" id="auBtn">Log In →</button>
+    </form>
+
+    <div id="auMsg" class="amsg hidden"></div>
+
+    <div class="demo-bar">
+      <span>Expo Instant Preview:</span>
+      <button type="button" class="btn sm" onclick="startDemo('student')">🎓 Student Demo</button>
+      <button type="button" class="btn sm" onclick="startDemo('teacher')">👩‍🏫 Teacher Demo</button>
+    </div>
+  </div>
+</section>
+
+<div class="app hidden" id="appRoot">
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <div class="bicon"></div>
+      <div>
+        <div class="bname">ISAPP</div>
+        <div class="bsub" id="brandSub">Student Portal</div>
+      </div>
+    </div>
+    <nav class="nav" id="mainNav"></nav>
+    <div class="sbot">
+      <button class="nbtn" data-page="settings">Settings</button>
+      <button class="nbtn" onclick="signOut()">Log Out</button>
+      <div class="sprof">
+        <div class="av" id="sAv">ST</div>
+        <div>
+          <div class="mname" id="sName">Student</div>
+          <div class="mmeta" id="sMeta">1st Year</div>
+        </div>
+      </div>
+      <div class="sfoot">● <span id="sMode">Connected</span></div>
+    </div>
+  </aside>
+
+  <button class="scrim" id="scrim"></button>
+
+  <main class="main">
+    <header class="topbar">
+      <div style="display:flex;align-items:center;gap:10px">
+        <button class="ibtn" id="mBtn">☰</button>
+        <div class="crumb" id="crumb">Dashboard</div>
+      </div>
+      <div class="topr">
+        <button class="sbtn" id="qSrch">Search classmates...</button>
+        <span class="spill" id="cBadge">Connected</span>
+        <button onclick="go(st.profile.role==='teacher'?'t_profile':'profile')" style="border:0;background:none;padding:0">
+          <div class="av sm" id="tAv">ST</div>
+        </button>
+      </div>
+    </header>
+    <div class="content" id="content"></div>
+  </main>
+</div>
+
+<div id="modalRoot"></div>
+<div id="toastRoot"></div>
+
+<script>
+  // ===== PUT YOUR SUPABASE DETAILS HERE =====
+  // Supabase dashboard -> Project Settings -> API
+  // 1) Project URL   -> paste in SUPABASE_URL
+  // 2) anon / publishable key -> paste in SUPABASE_KEY
+  const SUPABASE_URL = "https://nczuzjhkqvvycinreajl.supabase.co";
+  const SUPABASE_KEY = "sb_publishable_2TRmacywkMMi_4xK7nQOuQ_C6pWZj9M";
+  // ==========================================
+</script>
+<script src="app11.js"></script>
+</body>
+</html>
