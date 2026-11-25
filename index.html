@@ -1,13 +1,16 @@
+
 <!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ISAPP — Student &amp; Faculty Portal</title>
+
 <link rel="stylesheet" href="style.css">
-<script src="app.js"></script>
+
 </head>
 <body>
+
 <section class="auth-wrap" id="authScreen">
   <div class="auth-hero">
     <div class="brand" style="border:0;padding:0;margin:0">
@@ -155,15 +158,17 @@
 <div id="modalRoot"></div>
 <div id="toastRoot"></div>
 
+<!-- Supabase library -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<!-- Your Supabase configuration -->
 <script>
-  // ===== PUT YOUR SUPABASE DETAILS HERE =====
-  // Supabase dashboard -> Project Settings -> API
-  // 1) Project URL   -> paste in SUPABASE_URL
-  // 2) anon / publishable key -> paste in SUPABASE_KEY
-  const SUPABASE_URL = "https://nczuzjhkqvvycinreajl.supabase.co";
-  const SUPABASE_KEY = "sb_publishable_2TRmacywkMMi_4xK7nQOuQ_C6pWZj9M";
-  // ==========================================
+const SUPABASE_URL = "https://nczuzjhkqvvycinreajl.supabase.co";
+const SUPABASE_KEY = "sb_publishable_2TRmacywkMMi_4xK7nQOuQ_C6pWZj9M";
 </script>
+
+<!-- Your main JavaScript file -->
 <script src="app.js"></script>
+
 </body>
 </html>
